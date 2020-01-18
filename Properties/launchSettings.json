@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "StereoKitPaintTutorial": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
