@@ -51,6 +51,7 @@ namespace StereoKitPaintTutorial
         {
             Hand hand = Input.Hand(handed);
             Vec3 tip  = hand[FingerId.Index, JointId.Tip].position;
+            tip = Hierarchy.ToLocal(tip);
             tip = Vec3.Lerp(_prevFingertip, tip, 0.3f);
             _prevFingertip = tip;
 
