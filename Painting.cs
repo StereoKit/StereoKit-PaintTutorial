@@ -9,6 +9,7 @@ namespace StereoKitPaintTutorial
     {
         List<LinePoint>   _activeLine = new List<LinePoint>();
         List<LinePoint[]> _lineList   = new List<LinePoint[]>();
+        List<LinePoint[]> _undoList   = new List<LinePoint[]>();
 
         Vec3 _prevFingertip;
 
@@ -68,6 +69,21 @@ namespace StereoKitPaintTutorial
             Lines.Add(_activeLine.ToArray());
             for (int i = 0; i < _lineList.Count; i++)
                 Lines.Add(_lineList[i]);
+        }
+
+        public void Undo()
+        {
+            if (_lineList.Count == 0)
+                return;
+            _undoList.Add(_lineList.Last());
+            _lineList.RemoveAt(_lineList.Count-1);
+        }
+        public void Redo()
+        {
+            if (_undoList.Count == 0)
+                return;
+            _lineList.Add(_undoList.Last());
+            _undoList.RemoveAt(_undoList.Count-1);
         }
 
         #region File Load and Save

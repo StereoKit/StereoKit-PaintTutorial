@@ -9,8 +9,8 @@ namespace StereoKitPaintTutorial
     {
         static Painting    activePainting = new Painting();
         static PaletteMenu paletteMenu;
-        static Pose        paintingPose  = new Pose(Vec3.Zero, Quat.Identity);
-        static Pose        menuPose      = new Pose(new Vec3(0, 0, -0.3f), Quat.LookDir(-Vec3.Forward));
+        static Pose        paintingPose  = new Pose(new Vec3(0,    0, -0.3f), Quat.Identity);
+        static Pose        menuPose      = new Pose(new Vec3(0.4f, 0, -0.4f), Quat.LookDir(-1,0,1));
         static string      defaultFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
         static void Main(string[] args)
@@ -56,6 +56,10 @@ namespace StereoKitPaintTutorial
                     defaultFolder,
                     LoadPainting,
                     new FilePicker.Filter("Painting", "*.skp"));
+                    
+            if (UI.Button("Undo")) activePainting.Undo();
+            UI.SameLine();
+            if (UI.Button("Redo")) activePainting.Redo();
 
             if (UI.Button("Clear"))
                 activePainting = new Painting();

@@ -4,7 +4,7 @@ namespace StereoKitPaintTutorial
 {
     class PaletteMenu
     {
-        Pose  _pose        = new Pose(new Vec3(0, 0, -0.3f), Quat.LookDir(-Vec3.Forward));
+        Pose  _pose        = new Pose(new Vec3(-.4f, 0, -0.4f), Quat.LookDir(1,0,1));
         Model _model       = Model.FromFile("Palette.glb", Default.ShaderUI);
         Model _swatchModel = Model.FromFile("Paint.glb",   Default.ShaderUI);
         Color _color       = Color.White;
