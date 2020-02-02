@@ -20,7 +20,7 @@ namespace StereoKitPaintTutorial
         public Color PaintColor { get{ return _color; } private set{ _color = value; } }
         public float PaintSize  { get{ return _size;  } private set{ _size  = value; } }
 
-        public void Draw()
+        public void Step()
         {
             // Begin an affordance handle for the palette menu, this allows users to
             // grab the palette and move it around wherever they see fit! We'll use 
@@ -36,7 +36,8 @@ namespace StereoKitPaintTutorial
 
             // Then four color swatches for the user can pick from! Feel free to 
             // add a few more here, or switch the colors up! Try Color.HSV to create
-            // some nice colors :)
+            // some nice colors :) The positions for the swatches were just eyeballed
+            // when making the art assets, so no magic formula here.
             Swatch("White", new Vec3(4, 7, 0) * Units.cm2m, Color.White);
             Swatch("Red",   new Vec3(9, 3, 0) * Units.cm2m, new Color(1,0,0));
             Swatch("Green", new Vec3(9,-3, 0) * Units.cm2m, new Color(0,1,0));

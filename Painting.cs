@@ -7,18 +7,20 @@ namespace StereoKitPaintTutorial
 {
     class Painting
     {
-        Pose               _pose       = new Pose(new Vec3(0, 0, -0.3f), Quat.Identity);
-        List<LinePoint>    _activeLine = new List<LinePoint>();
-        List<LinePoint[]>  _lineList   = new List<LinePoint[]>();
-        Stack<LinePoint[]> _undoStack  = new Stack<LinePoint[]>();
+        Pose               _pose         = new Pose(new Vec3(0, 0, -0.3f), Quat.Identity);
+        List<LinePoint>    _activeStroke = new List<LinePoint>();
+        List<LinePoint[]>  _strokeList   = new List<LinePoint[]>();
+        Stack<LinePoint[]> _undoStack    = new Stack<LinePoint[]>();
 
         Vec3 _prevFingertip;
         bool _isDrawing;
 
         public void Step(Handed handed, Color color, float thickness)
         {
-            // We'll enclose the whole painting with an affordance, so we can
-            // move the painting around while we work with it.
+            // We'll make the whole painting the child of an affordance, so we can
+            // move the painting around while we work with it! Affordances and 
+            // Windows both push a transform onto the Hierarchy stack, so all 
+            // subsequent locations are then relative to that transform.
             UI.AffordanceBegin("PaintingRoot", ref _pose, new Bounds(Vec3.One * 5 * Units.cm2m), true);
 
             UpdateInput(handed, color, thickness);
@@ -30,12 +32,12 @@ namespace StereoKitPaintTutorial
         public void Undo()
         {
             // No undo if there's nothing in the painting
-            if (_lineList.Count == 0)
+            if (_strokeList.Count == 0)
                 return;
 
-            // Push the last line into the undo stack, and remove from the painting!
-            _undoStack.Push(_lineList.Last());
-            _lineList.RemoveAt(_lineList.Count-1);
+            // Push the last stroke into the undo stack, and remove from the painting!
+            _undoStack.Push(_strokeList.Last());
+            _strokeList.RemoveAt(_strokeList.Count-1);
         }
 
         public void Redo()
@@ -45,87 +47,94 @@ namespace StereoKitPaintTutorial
                 return;
 
             // Pop the most recent Undo off the stack, and add it to the painting.
-            _lineList.Add(_undoStack.Pop());
+            _strokeList.Add(_undoStack.Pop());
         }
 
         void UpdateInput(Handed handed, Color color, float thickness)
         {
             // Get the hand's fingertip, convert it to local space, and smooth
-            // it out to reduce any jagged noise.
-            Hand hand = Input.Hand(handed);
-            Vec3 tip  = hand[FingerId.Index, JointId.Tip].position;
-            tip = Hierarchy.ToLocal(tip);
-            tip = Vec3.Lerp(_prevFingertip, tip, 0.3f);
+            // it out to reduce any jagged noise! The hand's location data is always
+            // provided in world space, but since we're inside of an Affordance
+            // which uses the Hierarchy stack, we need to convert the fingertip's 
+            // coordinates into Heirarchy local coordinates before we can work with it.
+            Hand hand      = Input.Hand(handed);
+            Vec3 fingertip = hand[FingerId.Index, JointId.Tip].position;
+            fingertip = Hierarchy.ToLocal(fingertip);
+            fingertip = Vec3.Lerp(_prevFingertip, fingertip, 0.3f);
             
             // If the user just made a pinching motion, and is not interacting
             // with the UI, we'll begin a paint stroke!
             if (hand.IsJustPinched && !UI.IsInteracting(handed))
             { 
-                BeginLine(tip, color, thickness);
+                BeginStroke(fingertip, color, thickness);
                 _isDrawing = true;
-            }
-            // And when they cease the pinching motion, we'll end whatever line
-            // we started.
-            if (_isDrawing && hand.IsJustUnpinched)
-            {
-                EndLine();
-                _isDrawing = false;
             }
             // If we're drawing a paint stroke, then lets update it with the current
             // steps information!
             if (_isDrawing)
-                UpdateLine(tip, color, thickness);
+                UpdateStroke(fingertip, color, thickness);
+            // And when they cease the pinching motion, we'll end whatever stroke
+            // we started.
+            if (_isDrawing && hand.IsJustUnpinched)
+            {
+                EndStroke();
+                _isDrawing = false;
+            }
 
-            _prevFingertip = tip;
+            _prevFingertip = fingertip;
         }
 
         void Draw()
         {
-            // Draw the unfinished line the user may be drawing
-            Lines.Add(_activeLine.ToArray());
+            // Draw the unfinished stroke the user may be drawing
+            Lines.Add(_activeStroke.ToArray());
 
-            // Then draw all the other lines that are part of the painting!
-            for (int i = 0; i < _lineList.Count; i++)
-                Lines.Add(_lineList[i]);
+            // Then draw all the other strokes that are part of the painting!
+            for (int i = 0; i < _strokeList.Count; i++)
+                Lines.Add(_strokeList[i]);
         }
 
-        void BeginLine(Vec3 at, Color32 color, float thickness)
+        void BeginStroke(Vec3 at, Color32 color, float thickness)
         {
             // Start with two points! The first one begins at the point provided,
             // and the second one will always be updated to the current fingertip
-            // location, to prevent 'popping'
-            _activeLine.Add(new LinePoint(at, color, thickness));
-            _activeLine.Add(new LinePoint(at, color, thickness));
+            // location. We add new points once we reach a certain distance from 
+            // the last point, but a naive implementation of this can result in
+            // a popping effect when points are simply added at distance intervals.
+            // The extra point that directly follows the fingertip will nicely
+            // prevent this 'popping' artifact!
+            _activeStroke.Add(new LinePoint(at, color, thickness));
+            _activeStroke.Add(new LinePoint(at, color, thickness));
             _prevFingertip = at;
         }
 
-        void UpdateLine(Vec3 at, Color32 color, float thickness)
+        void UpdateStroke(Vec3 at, Color32 color, float thickness)
         {
             // Calculate the current distance from the last point, as well as the
             // speed at which the hand is traveling.
-            Vec3  prevLinePoint = _activeLine[_activeLine.Count - 2].pt;
+            Vec3  prevLinePoint = _activeStroke[_activeStroke.Count - 2].pt;
             float dist  = Vec3.Distance(prevLinePoint, at);
             float speed = Vec3.Distance(at, _prevFingertip) / Time.Elapsedf;
 
             // Create a point at the current location, using speed as the thickness
-            // of the line! The last point in the line should always be at the current
+            // of the stroke! The last point in the stroke should always be at the current
             // fingertip location to prevent 'popping' when adding a new point.
             LinePoint here  = new LinePoint(at, color, Math.Max(1 - speed * 0.5f, 0.1f) * thickness);
-            _activeLine[_activeLine.Count - 1] = here;
+            _activeStroke[_activeStroke.Count - 1] = here;
 
             // If we're more than a centimeter away from our last point, we'll add
             // a new point! This is simple, but effective enough. A higher quality
             // implementation might use an error/change function that also factors
             // into account the change in angle.
             if (dist > 1 * Units.cm2m)
-                _activeLine.Add(here);
+                _activeStroke.Add(here);
         }
 
-        void EndLine()
+        void EndStroke()
         {
-            // Add the active line to the painting, and clear it out for the next one!
-            _lineList.Add(_activeLine.ToArray());
-            _activeLine.Clear();
+            // Add the active stroke to the painting, and clear it out for the next one!
+            _strokeList.Add(_activeStroke.ToArray());
+            _activeStroke.Clear();
         }
 
         #region File Load and Save
@@ -146,7 +155,7 @@ namespace StereoKitPaintTutorial
             // 0 0 0 255 255 255 0.01, 0.1 0 0 255 255 255 0.01
             // 0 0.1 0 255 0 0 0.02, 0.1 0.1 0 255 0 0 0.02, 0.2 0 0 255 0 0 0.02
             Painting result = new Painting();
-            result._lineList = fileData
+            result._strokeList = fileData
                 .Split('\n')
                 .Select( textLine => textLine
                     .Split(',')
@@ -167,7 +176,7 @@ namespace StereoKitPaintTutorial
             // and three points in the second stroke (red):
             // 0 0 0 255 255 255 0.01, 0.1 0 0 255 255 255 0.01
             // 0 0.1 0 255 0 0 0.02, 0.1 0.1 0 255 0 0 0.02, 0.2 0 0 255 0 0 0.02
-            return string.Join('\n', _lineList
+            return string.Join('\n', _strokeList
                 .Select(line => string.Join(',', line
                     .Select(point => LinePointToString(point)))));
         }

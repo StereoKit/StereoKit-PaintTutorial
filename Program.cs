@@ -30,7 +30,7 @@ namespace StereoKitPaintTutorial
             //
             // Steppers are classes that implement the IStepper interface, and once added to
             // StereoKit's stepper list, will have their Step method called each frame! This
-            // is a great way to add fire and forget objects or systems that need to update 
+            // is a great way to add fire-and-forget objects or systems that need to update 
             // each frame.
             StereoKitApp.AddStepper(new HandMenuRadial(
                 new HandRadialLayer("Root",
@@ -50,18 +50,18 @@ namespace StereoKitPaintTutorial
                 // brush strokes. This will also draw the painting too!
                 activePainting.Step(Handed.Right, paletteMenu.PaintColor, paletteMenu.PaintSize);
 
-                // Draw our palette UI!
-                paletteMenu.Draw();
+                // Step our palette UI!
+                paletteMenu.Step();
 
-                // Draw our application's menu! This includes Save/Load Clear and Quit commands.
-                ShowMenuWindow();
+                // Step our application's menu! This includes Save/Load Clear and Quit commands.
+                StepMenuWindow();
             }));
 
             // We're done! Clean up StereoKit and all its resources :)
             StereoKitApp.Shutdown();
         }
 
-        static void ShowMenuWindow()
+        static void StepMenuWindow()
         {
             // Begin the application's menu window
             UI.WindowBegin("Menu", ref menuPose, new Vec2(20, 0) * Units.cm2m);
