@@ -33,7 +33,7 @@ namespace StereoKitPaintTutorial
             // is a great way to add fire-and-forget objects or systems that need to update 
             // each frame.
             StereoKitApp.AddStepper(new HandMenuRadial(
-                new HandRadialLayer("Root",
+                new HandRadialLayer("Root", -90,
                     new HandMenuItem("Undo", null, ()=>activePainting?.Undo()),
                     new HandMenuItem("Redo", null, ()=>activePainting?.Redo()))));
 
