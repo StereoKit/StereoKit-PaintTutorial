@@ -6,7 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="StereoKit" Version="0.1.7-preview2" /> <!--Match any version before 1.0-->
+    <Compile Remove="StereoKitPaintTutorial_UWP\**" />
+    <EmbeddedResource Remove="StereoKitPaintTutorial_UWP\**" />
+    <None Remove="StereoKitPaintTutorial_UWP\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StereoKit" Version="0.1.7" /> <!--Match any version before 1.0-->
   </ItemGroup>
 
   <ItemGroup>
