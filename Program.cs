@@ -8,7 +8,8 @@ namespace StereoKitPaintTutorial
     class Program
     {
         static Painting    activePainting = new Painting();
-        static PaletteMenu paletteMenu;
+        static PaletteMenu paletteMenuLeft;
+        static PaletteMenu paletteMenuRight;
         static Pose        menuPose       = new Pose(new Vec3(0.4f, 0, -0.4f), Quat.LookDir(-1,0,1));
         static string      defaultFolder  = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
@@ -39,7 +40,9 @@ namespace StereoKitPaintTutorial
 
             // Initialize the palette menu, see PaletteMenu.cs! This class manages the palette
             // UI object for manipulating our brush stroke size and color.
-            paletteMenu = new PaletteMenu();
+            paletteMenuLeft = new PaletteMenu();
+            paletteMenuRight = new PaletteMenu();
+            paletteMenuRight.Pose = new Pose(new Vec3(0.1f, 0, -0.4f), Quat.LookDir(-0.25f, 0, 1));
 
             // Step the application each frame, until StereoKit is told to exit! The callback
             // code here is called every frame after input and system events, but before the
@@ -48,10 +51,12 @@ namespace StereoKitPaintTutorial
             {
                 // Send input information to the painting, it will handle this info to create
                 // brush strokes. This will also draw the painting too!
-                activePainting.Step(Handed.Right, paletteMenu.PaintColor, paletteMenu.PaintSize);
+                activePainting.Step(Handed.Left, paletteMenuLeft.PaintColor, paletteMenuLeft.PaintSize);
+                activePainting.Step(Handed.Right, paletteMenuRight.PaintColor, paletteMenuRight.PaintSize);
 
                 // Step our palette UI!
-                paletteMenu.Step();
+                paletteMenuLeft.Step();
+                paletteMenuRight.Step();
 
                 // Step our application's menu! This includes Save/Load Clear and Quit commands.
                 StepMenuWindow();

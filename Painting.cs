@@ -8,12 +8,21 @@ namespace StereoKitPaintTutorial
     class Painting
     {
         Pose               _pose         = new Pose(new Vec3(0, 0, -0.3f), Quat.Identity);
-        List<LinePoint>    _activeStroke = new List<LinePoint>();
+        Dictionary<Handed, List<LinePoint>> _activeStroke = new Dictionary<Handed, List<LinePoint>> {
+            {  Handed.Left, new List<LinePoint>() },
+            {  Handed.Right, new List<LinePoint>() }
+        };
         List<LinePoint[]>  _strokeList   = new List<LinePoint[]>();
         Stack<LinePoint[]> _undoStack    = new Stack<LinePoint[]>();
 
-        Vec3 _prevFingertip;
-        bool _isDrawing;
+        Dictionary<Handed, Vec3> _prevFingertip = new Dictionary<Handed, Vec3> {
+            {  Handed.Left, new Vec3() },
+            {  Handed.Right, new Vec3() }
+        };
+        Dictionary<Handed, bool> _isDrawing = new Dictionary<Handed, bool> {
+            {  Handed.Left, false },
+            {  Handed.Right, false }
+        };
 
         public void Step(Handed handed, Color color, float thickness)
         {
@@ -60,41 +69,42 @@ namespace StereoKitPaintTutorial
             Hand hand      = Input.Hand(handed);
             Vec3 fingertip = hand[FingerId.Index, JointId.Tip].position;
             fingertip = Hierarchy.ToLocal(fingertip);
-            fingertip = Vec3.Lerp(_prevFingertip, fingertip, 0.3f);
+            fingertip = Vec3.Lerp(_prevFingertip[handed], fingertip, 0.3f);
             
             // If the user just made a pinching motion, and is not interacting
             // with the UI, we'll begin a paint stroke!
             if (hand.IsJustPinched && !UI.IsInteracting(handed))
             { 
-                BeginStroke(fingertip, color, thickness);
-                _isDrawing = true;
+                BeginStroke(handed, fingertip, color, thickness);
+                _isDrawing[handed] = true;
             }
             // If we're drawing a paint stroke, then lets update it with the current
             // steps information!
-            if (_isDrawing)
-                UpdateStroke(fingertip, color, thickness);
+            if (_isDrawing[handed])
+                UpdateStroke(handed, fingertip, color, thickness);
             // And when they cease the pinching motion, we'll end whatever stroke
             // we started.
-            if (_isDrawing && hand.IsJustUnpinched)
+            if (_isDrawing[handed] && hand.IsJustUnpinched)
             {
-                EndStroke();
-                _isDrawing = false;
+                EndStroke(handed);
+                _isDrawing[handed] = false;
             }
 
-            _prevFingertip = fingertip;
+            _prevFingertip[handed] = fingertip;
         }
 
         void Draw()
         {
             // Draw the unfinished stroke the user may be drawing
-            Lines.Add(_activeStroke.ToArray());
+            Lines.Add(_activeStroke[Handed.Left].ToArray());
+            Lines.Add(_activeStroke[Handed.Right].ToArray());
 
             // Then draw all the other strokes that are part of the painting!
             for (int i = 0; i < _strokeList.Count; i++)
                 Lines.Add(_strokeList[i]);
         }
 
-        void BeginStroke(Vec3 at, Color32 color, float thickness)
+        void BeginStroke(Handed handed, Vec3 at, Color32 color, float thickness)
         {
             // Start with two points! The first one begins at the point provided,
             // and the second one will always be updated to the current fingertip
@@ -103,38 +113,38 @@ namespace StereoKitPaintTutorial
             // a popping effect when points are simply added at distance intervals.
             // The extra point that directly follows the fingertip will nicely
             // prevent this 'popping' artifact!
-            _activeStroke.Add(new LinePoint(at, color, thickness));
-            _activeStroke.Add(new LinePoint(at, color, thickness));
-            _prevFingertip = at;
+            _activeStroke[handed].Add(new LinePoint(at, color, thickness));
+            _activeStroke[handed].Add(new LinePoint(at, color, thickness));
+            _prevFingertip[handed] = at;
         }
 
-        void UpdateStroke(Vec3 at, Color32 color, float thickness)
+        void UpdateStroke(Handed handed, Vec3 at, Color32 color, float thickness)
         {
             // Calculate the current distance from the last point, as well as the
             // speed at which the hand is traveling.
-            Vec3  prevLinePoint = _activeStroke[_activeStroke.Count - 2].pt;
+            Vec3  prevLinePoint = _activeStroke[handed][_activeStroke[handed].Count - 2].pt;
             float dist  = Vec3.Distance(prevLinePoint, at);
-            float speed = Vec3.Distance(at, _prevFingertip) / Time.Elapsedf;
+            float speed = Vec3.Distance(at, _prevFingertip[handed]) / Time.Elapsedf;
 
             // Create a point at the current location, using speed as the thickness
             // of the stroke! The last point in the stroke should always be at the current
             // fingertip location to prevent 'popping' when adding a new point.
             LinePoint here  = new LinePoint(at, color, Math.Max(1 - speed * 0.5f, 0.1f) * thickness);
-            _activeStroke[_activeStroke.Count - 1] = here;
+            _activeStroke[handed][_activeStroke[handed].Count - 1] = here;
 
             // If we're more than a centimeter away from our last point, we'll add
             // a new point! This is simple, but effective enough. A higher quality
             // implementation might use an error/change function that also factors
             // into account the change in angle.
             if (dist > 1 * Units.cm2m)
-                _activeStroke.Add(here);
+                _activeStroke[handed].Add(here);
         }
 
-        void EndStroke()
+        void EndStroke(Handed handed)
         {
             // Add the active stroke to the painting, and clear it out for the next one!
-            _strokeList.Add(_activeStroke.ToArray());
-            _activeStroke.Clear();
+            _strokeList.Add(_activeStroke[handed].ToArray());
+            _activeStroke[handed].Clear();
         }
 
         #region File Load and Save

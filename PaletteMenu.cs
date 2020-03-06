@@ -17,6 +17,7 @@ namespace StereoKitPaintTutorial
         
         // These properties are public, so back in Program.cs, we can get access to
         // these values!
+        public Pose Pose { get{ return _pose;  } set{ _pose  = value; } }
         public Color PaintColor { get{ return _color; } private set{ _color = value; } }
         public float PaintSize  { get{ return _size;  } private set{ _size  = value; } }
 
