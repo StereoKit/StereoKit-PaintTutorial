@@ -46,6 +46,19 @@
         </uap:DefaultTile >
         <uap:SplashScreen Image="Assets\Logo\Logo-Wide300.png" />
       </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name=".skp">
+            <uap:DisplayName>StereoKit</uap:DisplayName>
+            <uap:SupportedFileTypes>
+              <uap:FileType>.skp</uap:FileType>
+            </uap:SupportedFileTypes>
+          </uap:FileTypeAssociation>
+        </uap:Extension>
+      </Extensions>
     </Application>
   </Applications>
+  <Capabilities>
+    <uap:Capability Name="documentsLibrary" />
+  </Capabilities>
 </Package>

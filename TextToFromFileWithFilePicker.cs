@@ -1,3 +1,4 @@
+#if !WINDOWS_UWP
 using System;
 using System.IO;
 using StereoKit.Framework;
@@ -33,3 +34,4 @@ namespace StereoKitPaintTutorial
 
     }
 }
+#endif

@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="..\*.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextToFromFileWithFilePickerUWP.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
