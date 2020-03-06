@@ -48,6 +48,7 @@ namespace StereoKitPaintTutorial
             {
                 // Send input information to the painting, it will handle this info to create
                 // brush strokes. This will also draw the painting too!
+                activePainting.Step(Handed.Left, paletteMenu.PaintColor, paletteMenu.PaintSize);
                 activePainting.Step(Handed.Right, paletteMenu.PaintColor, paletteMenu.PaintSize);
 
                 // Step our palette UI!
