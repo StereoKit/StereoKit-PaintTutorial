@@ -42,6 +42,7 @@ namespace StereoKitPaintTutorial
             // UI object for manipulating our brush stroke size and color.
             paletteMenuLeft = new PaletteMenu();
             paletteMenuRight = new PaletteMenu();
+            paletteMenuRight.Pose = new Pose(new Vec3(0.1f, 0, -0.4f), Quat.LookDir(-0.25f, 0, 1));
 
             // Step the application each frame, until StereoKit is told to exit! The callback
             // code here is called every frame after input and system events, but before the
