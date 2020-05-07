@@ -20,11 +20,11 @@ class PaletteMenu
 
 	public void Step()
 	{
-		// Begin an affordance handle for the palette menu, this allows users to
-		// grab the palette and move it around wherever they see fit! We'll use 
-		// the palette model's bounds for the size of the handle, and then we'll
-		// draw the palette model at the center of the affordance.
-		UI.AffordanceBegin("PaletteMenu", ref _pose, _model.Bounds);
+		// Begin a handle for the palette menu, this allows users to  grab 
+		// the palette and move it around wherever they see fit! We'll use 
+		// the palette model's bounds for the size of the handle, and then 
+		// we'll draw the palette model at the center of the handle.
+		UI.HandleBegin("PaletteMenu", ref _pose, _model.Bounds);
 		_model.Draw(Matrix.Identity);
 
 		// Here's a slider for the brushstroke's size! Then we also draw the 
@@ -42,7 +42,7 @@ class PaletteMenu
 		Swatch("Blue",  new Vec3(3,-6, 0) * Units.cm2m, new Color(0,0,1));
 
 		// And end the affordance handle!
-		UI.AffordanceEnd();
+		UI.HandleEnd();
 	}
 
 	void Swatch(string id, Vec3 at, Color color)

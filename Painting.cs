@@ -15,16 +15,16 @@ class Painting
 
 	public void Step(Handed handed, Color color, float thickness)
 	{
-		// We'll make the whole painting the child of an affordance, so we can
-		// move the painting around while we work with it! Affordances and 
+		// We'll make the whole painting the child of a handle, so we can
+		// move the painting around while we work with it! Handles and 
 		// Windows both push a transform onto the Hierarchy stack, so all 
 		// subsequent locations are then relative to that transform.
-		UI.AffordanceBegin("PaintingRoot", ref _pose, new Bounds(Vec3.One * 5 * Units.cm2m), true);
+		UI.HandleBegin("PaintingRoot", ref _pose, new Bounds(Vec3.One * 5 * Units.cm2m), true);
 
 		UpdateInput(handed, color, thickness);
 		Draw();
 
-		UI.AffordanceEnd();
+		UI.HandleEnd();
 	}
 
 	public void Undo()
