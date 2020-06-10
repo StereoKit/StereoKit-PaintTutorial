@@ -5,7 +5,7 @@ using System.Linq;
 
 class Painting
 {
-	Pose               _pose         = new Pose(0, 0, -0.3f, Quat.Identity);
+	Pose               _pose         = new Pose(0, 0, -0.8f, Quat.Identity);
 	List<LinePoint>    _activeStroke = new List<LinePoint>();
 	List<LinePoint[]>  _strokeList   = new List<LinePoint[]>();
 	Stack<LinePoint[]> _undoStack    = new Stack<LinePoint[]>();
