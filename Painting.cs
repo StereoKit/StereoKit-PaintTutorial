@@ -33,7 +33,8 @@ class Painting
 		if (_strokeList.Count == 0)
 			return;
 
-		// Push the last stroke into the undo stack, and remove from the painting!
+		// Push the last stroke into the undo stack, and remove from the
+		// painting!
 		_undoStack.Push(_strokeList.Last());
 		_strokeList.RemoveAt(_strokeList.Count-1);
 	}
@@ -51,10 +52,11 @@ class Painting
 	void UpdateInput(Handed handed, Color color, float thickness)
 	{
 		// Get the hand's fingertip, convert it to local space, and smooth
-		// it out to reduce any jagged noise! The hand's location data is always
-		// provided in world space, but since we're inside of an Affordance
-		// which uses the Hierarchy stack, we need to convert the fingertip's 
-		// coordinates into Heirarchy local coordinates before we can work with it.
+		// it out to reduce any jagged noise! The hand's location data is
+		// always provided in world space, but since we're inside of an
+		// Affordance which uses the Hierarchy stack, we need to convert the
+		// fingertip's coordinates into Heirarchy local coordinates before we
+		// can work with it.
 		Hand hand      = Input.Hand(handed);
 		Vec3 fingertip = hand[FingerId.Index, JointId.Tip].position;
 		fingertip = Hierarchy.ToLocal(fingertip);
@@ -67,8 +69,8 @@ class Painting
 			BeginStroke(fingertip, color, thickness);
 			_isDrawing = true;
 		}
-		// If we're drawing a paint stroke, then lets update it with the current
-		// steps information!
+		// If we're drawing a paint stroke, then lets update it with the
+		// current steps information!
 		if (_isDrawing)
 			UpdateStroke(fingertip, color, thickness);
 		// And when they cease the pinching motion, we'll end whatever stroke
@@ -98,9 +100,9 @@ class Painting
 		// and the second one will always be updated to the current fingertip
 		// location. We add new points once we reach a certain distance from 
 		// the last point, but a naive implementation of this can result in
-		// a popping effect when points are simply added at distance intervals.
-		// The extra point that directly follows the fingertip will nicely
-		// prevent this 'popping' artifact!
+		// a popping effect when points are simply added at distance 
+		// intervals. The extra point that directly follows the fingertip
+		// will nicely prevent this 'popping' artifact!
 		_activeStroke.Add(new LinePoint(at, color, thickness));
 		_activeStroke.Add(new LinePoint(at, color, thickness));
 		_prevFingertip = at;
@@ -114,24 +116,25 @@ class Painting
 		float dist  = Vec3.Distance(prevLinePoint, at);
 		float speed = Vec3.Distance(at, _prevFingertip) / Time.Elapsedf;
 
-		// Create a point at the current location, using speed as the thickness
-		// of the stroke! The last point in the stroke should always be at the current
-		// fingertip location to prevent 'popping' when adding a new point.
+		// Create a point at the current location, using speed as the
+		// thickness of the stroke! The last point in the stroke should
+		// always be at the current fingertip location to prevent 'popping'
+		// when adding a new point.
 		LinePoint here  = new LinePoint(at, color, Math.Max(1 - speed * 0.5f, 0.1f) * thickness);
 		_activeStroke[_activeStroke.Count - 1] = here;
 
-		// If we're more than a centimeter away from our last point, we'll add
-		// a new point! This is simple, but effective enough. A higher quality
-		// implementation might use an error/change function that also factors
-		// into account the change in angle.
-		if (dist > 1 * Units.cm2m)
+		// If we're more than a centimeter away from our last point, we'll
+		// add a new point! This is simple, but effective enough. A higher
+		// quality implementation might use an error/change function that
+		// also factors into account the change in angle.
 		if (dist > 1 * U.cm)
 			_activeStroke.Add(here);
 	}
 
 	void EndStroke()
 	{
-		// Add the active stroke to the painting, and clear it out for the next one!
+		// Add the active stroke to the painting, and clear it out for the
+		// next one!
 		_strokeList.Add(_activeStroke.ToArray());
 		_activeStroke.Clear();
 	}
@@ -141,16 +144,16 @@ class Painting
 	public static Painting FromFile(string fileData)
 	{
 		// Here we're using Linq to parse a file! Linq is a Functional way of 
-		// writing code that can be pretty great once you get used to it. Linq
-		// should probably not be used in performance critical sections, but it's
-		// acceptable enough for discreet events.
+		// writing code that can be pretty great once you get used to it.
+		// Linq should probably not be used in performance critical sections,
+		// but it's acceptable enough for discrete events.
 		//
 		// In this file, each line is a paint stroke, and each point on that
-		// stroke is separated by a comma. Each item within a point is separated
-		// by spaces, which is taken care of in LinePointFromString.
+		// stroke is separated by a comma. Each item within a point is
+		// separated by spaces, which is taken care of in LinePointFromString.
 		//
-		// Example of a two stroke painting, two points in the first stroke (white), 
-		// and three points in the second stroke (red):
+		// Example of a two stroke painting, two points in the first stroke 
+		// (white), and three points in the second stroke (red):
 		// 0 0 0 255 255 255 0.01, 0.1 0 0 255 255 255 0.01
 		// 0 0.1 0 255 0 0 0.02, 0.1 0.1 0 255 0 0 0.02, 0.2 0 0 255 0 0 0.02
 		Painting result = new Painting();
@@ -166,13 +169,14 @@ class Painting
 
 	public string ToFileData()
 	{
-		// To convert this painting to a file is pretty simple! We have LinePointToString
-		// which we can use for each point, and then we just have to join all the data
-		// together. Each paint stroke goes on its own line using '\n', and each point
-		// on that stroke separated with a comma.
+		// To convert this painting to a file is pretty simple! We have
+		// LinePointToString which we can use for each point, and then we
+		// just have to join all the data together. Each paint stroke goes on
+		// its own line using '\n', and each point on that stroke separated
+		// with a comma.
 		//
-		// Example of a two stroke painting, two points in the first stroke (white), 
-		// and three points in the second stroke (red):
+		// Example of a two stroke painting, two points in the first stroke
+		// (white), and three points in the second stroke (red):
 		// 0 0 0 255 255 255 0.01, 0.1 0 0 255 255 255 0.01
 		// 0 0.1 0 255 0 0 0.02, 0.1 0.1 0 255 0 0 0.02, 0.2 0 0 255 0 0 0.02
 		return string.Join('\n', _strokeList
