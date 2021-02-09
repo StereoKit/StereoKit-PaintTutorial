@@ -19,7 +19,7 @@ class Painting
 		// move the painting around while we work with it! Handles and 
 		// Windows both push a transform onto the Hierarchy stack, so all 
 		// subsequent locations are then relative to that transform.
-		UI.HandleBegin("PaintingRoot", ref _pose, new Bounds(Vec3.One * 5 * Units.cm2m), true);
+		UI.HandleBegin("PaintingRoot", ref _pose, new Bounds(Vec3.One * 5 * U.cm), true);
 
 		UpdateInput(handed, color, thickness);
 		Draw();
@@ -59,7 +59,7 @@ class Painting
 		Vec3 fingertip = hand[FingerId.Index, JointId.Tip].position;
 		fingertip = Hierarchy.ToLocal(fingertip);
 		fingertip = Vec3.Lerp(_prevFingertip, fingertip, 0.3f);
-            
+
 		// If the user just made a pinching motion, and is not interacting
 		// with the UI, we'll begin a paint stroke!
 		if (hand.IsJustPinched && !UI.IsInteracting(handed))
@@ -125,6 +125,7 @@ class Painting
 		// implementation might use an error/change function that also factors
 		// into account the change in angle.
 		if (dist > 1 * Units.cm2m)
+		if (dist > 1 * U.cm)
 			_activeStroke.Add(here);
 	}
 

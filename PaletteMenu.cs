@@ -11,10 +11,10 @@ class PaletteMenu
 
 	Pose  _pose  = new Pose(-.4f, 0, -0.4f, Quat.LookDir(1,0,1));
 	Color _color = Color.White;
-	float _size  = 2 * Units.cm2m;
-        
 	// These properties are public, so back in Program.cs, we can get access to
 	// these values!
+	float _size  = 2 * U.cm;
+
 	public Color PaintColor { get{ return _color; } private set{ _color = value; } }
 	public float PaintSize  { get{ return _size;  } private set{ _size  = value; } }
 
@@ -29,17 +29,17 @@ class PaletteMenu
 
 		// Here's a slider for the brushstroke's size! Then we also draw the 
 		// brushstroke above it so we have a preview of the size as well.
-		UI.HSliderAt("Size", ref _size, 0.001f, 0.02f, 0, new Vec3(6,-1,0) * Units.cm2m, new Vec2(8,2) * Units.cm2m);
-		Lines.Add(new Vec3(6, 1, -1) * Units.cm2m, new Vec3(-2,1,-1) * Units.cm2m, _color, _size);
+		UI.HSliderAt("Size", ref _size, 0.001f, 0.02f, 0, V.XYZ(6,-1,0)*U.cm, V.XY(8,2)*U.cm);
+		Lines.Add(V.XYZ(6, 1, -1)*U.cm, V.XYZ(-2,1,-1)*U.cm, _color, _size);
 
 		// Then four color swatches for the user can pick from! Feel free to 
 		// add a few more here, or switch the colors up! Try Color.HSV to create
 		// some nice colors :) The positions for the swatches were just eyeballed
 		// when making the art assets, so no magic formula here.
-		Swatch("White", new Vec3(4, 7, 0) * Units.cm2m, Color.White);
-		Swatch("Red",   new Vec3(9, 3, 0) * Units.cm2m, new Color(1,0,0));
-		Swatch("Green", new Vec3(9,-3, 0) * Units.cm2m, new Color(0,1,0));
-		Swatch("Blue",  new Vec3(3,-6, 0) * Units.cm2m, new Color(0,0,1));
+		Swatch("White", new Vec3(4, 7, 0)*U.cm, Color.White);
+		Swatch("Red",   new Vec3(9, 3, 0)*U.cm, new Color(1,0,0));
+		Swatch("Green", new Vec3(9,-3, 0)*U.cm, new Color(0,1,0));
+		Swatch("Blue",  new Vec3(3,-6, 0)*U.cm, new Color(0,0,1));
 
 		// And end the affordance handle!
 		UI.HandleEnd();
@@ -53,7 +53,7 @@ class PaletteMenu
 		// If the users interacts with the volume the swatch model is in, then
 		// we'll set the active color, as well as the hand material's color to
 		// the swatch's color.
-		if (UI.VolumeAt(id, new Bounds(at, new Vec3(4, 4, 2) * Units.cm2m)))
+		if (UI.VolumeAt(id, new Bounds(at, V.XYZ(4, 4, 2)*U.cm)))
 		{
 			_color = color;
 			Default.MaterialHand[MatParamName.ColorTint] = color;

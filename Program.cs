@@ -17,8 +17,12 @@ class Program
 		// in when provided a relative folder name. Then we just Initialize StereoKit with
 		// the name of our app! Initialize can also be told to make a flatscreen app, or
 		// how to behave if the preferred initialization mode fails.
-		StereoKitApp.settings.assetsFolder = "Assets";
-		if (!StereoKitApp.Initialize("StereoKitPaintTutorial"))
+		SKSettings settings = new SKSettings
+		{
+			appName      = "StereoKitPaintTutorial",
+			assetsFolder = "Assets",
+		};
+		if (!SK.Initialize(settings))
 			Environment.Exit(1);
 
 		// This is a simple radial hand menu where we'll store some quick actions! It's 
@@ -30,7 +34,7 @@ class Program
 		// StereoKit's stepper list, will have their Step method called each frame! This
 		// is a great way to add fire-and-forget objects or systems that need to update 
 		// each frame.
-		StereoKitApp.AddStepper(new HandMenuRadial(
+		SK.AddStepper(new HandMenuRadial(
 			new HandRadialLayer("Root", -90,
 				new HandMenuItem("Undo", null, ()=>activePainting?.Undo()),
 				new HandMenuItem("Redo", null, ()=>activePainting?.Redo()))));
@@ -42,7 +46,7 @@ class Program
 		// Step the application each frame, until StereoKit is told to exit! The callback
 		// code here is called every frame after input and system events, but before the
 		// draw events!
-		while (StereoKitApp.Step(() =>
+		while (SK.Step(() =>
 		{
 			// Send input information to the painting, it will handle this info to create
 			// brush strokes. This will also draw the painting too!
@@ -56,13 +60,13 @@ class Program
 		}));
 
 		// We're done! Clean up StereoKit and all its resources :)
-		StereoKitApp.Shutdown();
+		SK.Shutdown();
 	}
 
 	static void StepMenuWindow()
 	{
 		// Begin the application's menu window
-		UI.WindowBegin("Menu", ref menuPose, new Vec2(20, 0) * Units.cm2m);
+		UI.WindowBegin("Menu", ref menuPose);
 
 		// When the user presses the save button, lets show a save file dialog! When a file
 		// name and folder have been selected, it'll make a call to SavePainting with the
@@ -91,7 +95,7 @@ class Program
 		// And if they want to quit? Just tell StereoKit! This will let StereoKit finish the
 		// the frame properly, and then break out of the Step loop above.
 		if (UI.Button("Quit"))
-			StereoKitApp.Quit();
+			SK.Quit();
 
 		// And end the window!
 		UI.WindowEnd();
