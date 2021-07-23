@@ -7,8 +7,8 @@ class PaletteMenu
 	// shader while loading it to the UI shader, so it has the proximity
 	// finger glow! This helps queue in users that it behaves like a UI
 	// element.
-	Model _model       = Model.FromFile("Palette.glb", Default.ShaderUI);
-	Model _swatchModel = Model.FromFile("Paint.glb",   Default.ShaderUI);
+	Model _model       = Model.FromFile("Palette.glb", Shader.UI);
+	Model _swatchModel = Model.FromFile("Paint.glb",   Shader.UI);
 
 	Pose  _pose  = new Pose(-.4f, 0, -0.4f, Quat.LookDir(1,0,1));
 	Color _color = Color.White;

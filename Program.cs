@@ -8,7 +8,6 @@ class Program
 	static Painting    activePainting = new Painting();
 	static PaletteMenu paletteMenu;
 	static Pose        menuPose       = new Pose(0.4f, 0, -0.4f, Quat.LookDir(-1,0,1));
-	static string      defaultFolder  = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 	static void Main(string[] args)
 	{
@@ -77,22 +76,14 @@ class Program
 		// a call to SavePainting with the file's path name with the .skp
 		// extension.
 		if (UI.Button("Save"))
-			FilePicker.Show(
-				FilePickerMode.Save,
-				defaultFolder,
-				SavePainting,
-				new FileFilter("Painting", "*.skp"));
+			Platform.FilePicker(PickerMode.Save, SavePainting, null, ".skp");
 
 		// And on that same line, we'll have a load button! This'll let the
 		// user pick out any .skp files, and will call LoadPainting with the
 		// selected file.
 		UI.SameLine();
 		if (UI.Button("Load"))
-			FilePicker.Show(
-				FilePickerMode.Open,
-				defaultFolder,
-				LoadPainting,
-				new FileFilter("Painting", "*.skp"));
+			Platform.FilePicker(PickerMode.Open, LoadPainting, null, ".skp");
 
 		// Clear is easy! Just create a new Painting object!
 		if (UI.Button("Clear"))
@@ -109,9 +100,9 @@ class Program
 	}
 
 	static void LoadPainting(string file)
-		=> activePainting = Painting.FromFile(File.ReadAllText(file));
+		=> activePainting = Painting.FromFile(Platform.ReadFileText(file)??"");
 
 	static void SavePainting(string file)
-		=> File.WriteAllText(file, activePainting.ToFileData());
+		=> Platform.WriteFile(file, activePainting.ToFileData());
 
 }
