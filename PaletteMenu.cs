@@ -5,7 +5,7 @@ class PaletteMenu
 	// These models are both used for the palette UI! One is for the root
 	// object, and the other is for the paint swatches. We override the
 	// shader while loading it to the UI shader, so it has the proximity
-	// finger glow! This helps queue in users that it behaves like a UI
+	// finger glow! This helps cue in users that it behaves like a UI
 	// element.
 	Model _model       = Model.FromFile("Palette.glb", Shader.UI);
 	Model _swatchModel = Model.FromFile("Paint.glb",   Shader.UI);

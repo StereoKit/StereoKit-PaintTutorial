@@ -85,9 +85,14 @@ class Program
 		if (UI.Button("Load"))
 			Platform.FilePicker(PickerMode.Open, LoadPainting, null, ".skp");
 
+		// Some visual separation
+		UI.HSeparator();
+
 		// Clear is easy! Just create a new Painting object!
 		if (UI.Button("Clear"))
 			activePainting = new Painting();
+
+		UI.HSeparator();
 
 		// And if they want to quit? Just tell StereoKit! This will let
 		// StereoKit finish the the frame properly, and then break out of the
