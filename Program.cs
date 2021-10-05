@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using StereoKit;
 using StereoKit.Framework;
 
@@ -8,6 +7,7 @@ class Program
 	static Painting    activePainting = new Painting();
 	static PaletteMenu paletteMenu;
 	static Pose        menuPose       = new Pose(0.4f, 0, -0.4f, Quat.LookDir(-1,0,1));
+	static Sprite      appLogo;
 
 	static void Main(string[] args)
 	{
@@ -19,7 +19,7 @@ class Program
 		// mode fails.
 		SKSettings settings = new SKSettings
 		{
-			appName      = "StereoKitPaintTutorial",
+			appName      = "StereoKit Ink",
 			assetsFolder = "Assets",
 		};
 		if (!SK.Initialize(settings))
@@ -43,6 +43,10 @@ class Program
 		// manages the palette UI object for manipulating our brush stroke
 		// size and color.
 		paletteMenu = new PaletteMenu();
+
+		// Load in the app logo as a sprite! We'll draw this at the top of
+		// the application menu later in this file.
+		appLogo = Sprite.FromFile("StereoKitInkLight.png");
 
 		// Step the application each frame, until StereoKit is told to exit!
 		// The callback code here is called every frame after input and
@@ -68,8 +72,22 @@ class Program
 
 	static void StepMenuWindow()
 	{
-		// Begin the application's menu window
-		UI.WindowBegin("Menu", ref menuPose);
+		// Begin the application's menu window, we'll draw this without a
+		// head bar (Body only) since we have a nice application image we can
+		// add instead!
+		UI.WindowBegin("Menu", ref menuPose, UIWin.Body);
+
+		// Just draw the application logo across the top of the Menu window!
+		// Vec2.Zero here tells StereoKit to auto-size both axes, so this
+		// will automatically expand to the width of the window.
+		UI.Image(appLogo, V.XY(UI.LayoutRemaining.x, 0));
+
+		// Add undo and redo to the main menu, these are both available on
+		// the radial menu, but these are easier to discover, and it never
+		// hurts to have multiple options!
+		if (UI.Button("Undo")) activePainting?.Undo();
+		UI.SameLine();
+		if (UI.Button("Redo")) activePainting?.Redo();
 
 		// When the user presses the save button, lets show a save file
 		// dialog! When a file name and folder have been selected, it'll make
@@ -92,11 +110,10 @@ class Program
 		if (UI.Button("Clear"))
 			activePainting = new Painting();
 
-		UI.HSeparator();
-
 		// And if they want to quit? Just tell StereoKit! This will let
 		// StereoKit finish the the frame properly, and then break out of the
 		// Step loop above.
+		UI.SameLine();
 		if (UI.Button("Quit"))
 			SK.Quit();
 
