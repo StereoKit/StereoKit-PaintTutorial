@@ -4,7 +4,7 @@ This is a demo application, and introductory tutorial for StereoKit aimed at int
 
 You'll find out how to create a core application loop, radial hand menus, easy window menus with automatic layout, object-based menus with more explicit layouts, and file pickers. You'll also see how easy it is to draw models, lines, and interact directly with your fingers!
 
-![](Docs/SKPaintTutorial.png)
+![](Docs/StereoKitInk.jpg)
 
 While I could have gone wild on adding features, this project is intended as a readable, easy to understand learning resource! It's an example of how to do things, and a good starting point for those that might be interested in creating a similar feature for themselves. It's not meant to be an exhaustive or fully featured product.
 
