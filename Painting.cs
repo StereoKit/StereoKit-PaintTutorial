@@ -117,18 +117,20 @@ class Painting
 		float speed = Vec3.Distance(at, _prevFingertip) / Time.Elapsedf;
 
 		// Create a point at the current location, using speed as the
-		// thickness of the stroke! The last point in the stroke should
-		// always be at the current fingertip location to prevent 'popping'
-		// when adding a new point.
-		LinePoint here  = new LinePoint(at, color, Math.Max(1 - speed * 0.5f, 0.1f) * thickness);
-		_activeStroke[_activeStroke.Count - 1] = here;
+		// thickness of the stroke!
+		LinePoint here = new LinePoint(at, color, Math.Max(1 - speed * 0.5f, 0.1f) * thickness);
 
 		// If we're more than a centimeter away from our last point, we'll
 		// add a new point! This is simple, but effective enough. A higher
 		// quality implementation might use an error/change function that
 		// also factors into account the change in angle.
+		// Otherwise, the last point in the stroke should always be at the
+		// current fingertip location to prevent 'popping' when adding a new
+		// point.
 		if (dist > 1 * U.cm)
 			_activeStroke.Add(here);
+		else
+			_activeStroke[_activeStroke.Count - 1] = here;
 	}
 
 	void EndStroke()
