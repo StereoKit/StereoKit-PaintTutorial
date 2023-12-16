@@ -1,32 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
     <ApplicationIcon>StereoKitInk.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StereoKit" Version="0.3.8" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="StereoKitInk_UWP\**" />
     <EmbeddedResource Remove="StereoKitInk_UWP\**" />
     <None Remove="StereoKitInk_UWP\**" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="StereoKit" Version="0.3.4-preview.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Assets\InkBottle.glb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\InkSplat.glb">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\StereoKitInkLight.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
 

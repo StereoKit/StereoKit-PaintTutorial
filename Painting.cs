@@ -114,7 +114,7 @@ class Painting
 		// speed at which the hand is traveling.
 		Vec3  prevLinePoint = _activeStroke[_activeStroke.Count - 2].pt;
 		float dist  = Vec3.Distance(prevLinePoint, at);
-		float speed = Vec3.Distance(at, _prevFingertip) / Time.Elapsedf;
+		float speed = Vec3.Distance(at, _prevFingertip) / Time.Stepf;
 
 		// Create a point at the current location, using speed as the
 		// thickness of the stroke!

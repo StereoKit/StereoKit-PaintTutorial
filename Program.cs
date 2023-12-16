@@ -1,4 +1,3 @@
-using System;
 using StereoKit;
 using StereoKit.Framework;
 
@@ -23,7 +22,7 @@ class Program
 			assetsFolder = "Assets",
 		};
 		if (!SK.Initialize(settings))
-			Environment.Exit(1);
+			return;
 
 		// This is a simple radial hand menu where we'll store some quick
 		// actions! It's activated by a grip motion, and is great for fast,
@@ -48,10 +47,10 @@ class Program
 		// the application menu later in this file.
 		appLogo = Sprite.FromFile("StereoKitInkLight.png");
 
-		// Step the application each frame, until StereoKit is told to exit!
-		// The callback code here is called every frame after input and
-		// system events, but before the draw events!
-		while (SK.Step(() =>
+		// Run StereoKit until it receives some sort of reason to quit! This
+		// callback code will get called every single frame, so you can kinda
+		// think of this like a while loop.
+		SK.Run(() =>
 		{
 			// Send input information to the painting, it will handle this
 			// info to create brush strokes. This will also draw the painting
@@ -64,10 +63,7 @@ class Program
 			// Step our application's menu! This includes Save/Load Clear and
 			// Quit commands.
 			StepMenuWindow();
-		}));
-
-		// We're done! Clean up StereoKit and all its resources :)
-		SK.Shutdown();
+		});
 	}
 
 	static void StepMenuWindow()
