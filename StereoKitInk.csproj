@@ -1,18 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <OutputType>Exe</OutputType>
-    <ApplicationIcon>StereoKitInk.ico</ApplicationIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<OutputType>Exe</OutputType>
+		
+		<ApplicationIcon>Platforms/Net/StereoKitInk.ico</ApplicationIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="StereoKit" Version="0.3.8" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="StereoKit" Version="0.3.8" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="StereoKitInk_UWP\**" />
-    <EmbeddedResource Remove="StereoKitInk_UWP\**" />
-    <None Remove="StereoKitInk_UWP\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<!--Don't compile Android code in this project, but do show it in the
+		    explorer window.-->
+		<Compile Remove="**\*.Android.cs" />
+		<Compile Remove="Platforms\Android\**" />
+		<None Include="**\*.Android.cs" />
+		<None Include="Platforms\Android\**" />
+		
+		<!--Don't compile UWP code in this project, but do show it in the
+		    explorer window.-->
+		<Compile Remove="**\*.UWP.cs" />
+		<Compile Remove="Platforms\UWP\**" />
+		<None Include="**\*.UWP.cs" />
+		<None Include="Platforms\UWP\**" />
+
+		<Compile Remove="Projects\**" />
+		<EmbeddedResource Remove="Projects\**" />
+		<None Remove="Projects\**" />
+	</ItemGroup>
 </Project>
-

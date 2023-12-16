@@ -17,19 +17,20 @@ This project uses [StereoKit](https://stereokit.net/) to render and drive this a
 
 ## Project Layout
 
-Since this is a pretty simple tutorial, there's not a lot of files here! But there are some things to make note of. This solution uses a 2 project setup: one is .Net Core, and one is UWP. Different projects support different features and targets, and I often switch between them based on what I'm working on.
+Since this is a pretty simple tutorial, there's not a lot of files here! But there are some things to make note of. This solution uses a 3 project setup: one for .NET Core, one for Android, and one for UWP. Different projects deploy to different targets, I'll often use .NET for rapid development, then switch to Android or UWP for on-device testing.
 
-- .Net Core Project
-  - WMR VR Desktop
-  - Flatscreen Desktop
-  - Leap Motion articulated hands
+You can switch between projects by right clicking on the project in the Solution Explorer, and selecting `Set as Startup Project`.
+
+- `StereoKitInk` - .NET Core
+  - XR on Desktop (Quest + Link, SteamVR, WMR, etc.)
+  - Simulator for development
   - No compile time
-- UWP Project
-  - HoloLens 2 + articulated hands
-  - WMR VR Desktop
-  - Flatscreen Desktop
-  - Controller simulated hands
-  - Some compile time
+- `StereoKitInk_Android` - Android
+  - Android standalone headsets (Quest, Vive, Pico, etc.)
+  - Low compile time
+- `StereoKitInk_UWP` - UWP
+  - HoloLens 2
+  - Slow compile time
 
 The project consists of only 3 code files, and a few art assets! The code aims to be very readable, and is also rich with comments to explain less intuitive items.
 

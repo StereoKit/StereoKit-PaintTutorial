@@ -18,7 +18,7 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
-    <SKAssetFolder>..\Assets</SKAssetFolder>
+    <SKAssetFolder>..\..\Assets</SKAssetFolder>
     <SKAssetDestination>Assets</SKAssetDestination>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
@@ -72,67 +72,37 @@
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
+	<ItemGroup>
+		<Compile Include="..\..\**\*.cs" Exclude="..\..\obj\**;..\..\bin\**;..\..\Projects\**" />
+
+		<!--Don't compile .NET Core code in this project.-->
+		<Compile Remove="..\..\**\*.Net.cs" />
+		<Compile Remove="..\..\Platforms\Net\**\*.cs" />
+
+    <!--Don't compile Android code in this project.-->
+		<Compile Remove="..\..\**\*.Android.cs" />
+		<Compile Remove="..\..\Platforms\Android\**\*.cs" />
+
+		<!--Hide everything in this project, otherwise it's a lot of
+		    duplication that creates noise.-->
+		<Compile Update="..\..\**" Visible="false" />
+		<None    Update="..\..\**" Visible="false" />
+		<Content Update="..\..\**" Visible="false" />
+
+		<Compile Update="..\..\**\*.UWP.cs" Visible="true" />
+		<Compile Update="..\..\Platforms\UWP\**\*.cs" Visible="true" />
+	</ItemGroup>
   <ItemGroup>
-    <Compile Include="..\*.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <AppxManifest Include="Package.appxmanifest">
+    <AppxManifest Include="..\..\Platforms\UWP\Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Logo\Logo-150.scale-100.png" />
-    <Content Include="Assets\Logo\Logo-150.scale-125.png" />
-    <Content Include="Assets\Logo\Logo-150.scale-150.png" />
-    <Content Include="Assets\Logo\Logo-150.scale-200.png" />
-    <Content Include="Assets\Logo\Logo-150.scale-400.png" />
-    <Content Include="Assets\Logo\Logo-310.scale-100.png" />
-    <Content Include="Assets\Logo\Logo-310.scale-125.png" />
-    <Content Include="Assets\Logo\Logo-310.scale-150.png" />
-    <Content Include="Assets\Logo\Logo-310.scale-200.png" />
-    <Content Include="Assets\Logo\Logo-310.scale-400.png" />
-    <Content Include="Assets\Logo\Logo-44.altform-lightunplated_targetsize-16.png" />
-    <Content Include="Assets\Logo\Logo-44.altform-lightunplated_targetsize-24.png" />
-    <Content Include="Assets\Logo\Logo-44.altform-lightunplated_targetsize-256.png" />
-    <Content Include="Assets\Logo\Logo-44.altform-lightunplated_targetsize-32.png" />
-    <Content Include="Assets\Logo\Logo-44.altform-lightunplated_targetsize-48.png" />
-    <Content Include="Assets\Logo\Logo-44.altform-unplated_targetsize-16.png" />
-    <Content Include="Assets\Logo\Logo-44.altform-unplated_targetsize-24.png" />
-    <Content Include="Assets\Logo\Logo-44.altform-unplated_targetsize-256.png" />
-    <Content Include="Assets\Logo\Logo-44.altform-unplated_targetsize-32.png" />
-    <Content Include="Assets\Logo\Logo-44.altform-unplated_targetsize-48.png" />
-    <Content Include="Assets\Logo\Logo-44.scale-100.png" />
-    <Content Include="Assets\Logo\Logo-44.scale-125.png" />
-    <Content Include="Assets\Logo\Logo-44.scale-150.png" />
-    <Content Include="Assets\Logo\Logo-44.scale-200.png" />
-    <Content Include="Assets\Logo\Logo-44.scale-400.png" />
-    <Content Include="Assets\Logo\Logo-44.targetsize-16.png" />
-    <Content Include="Assets\Logo\Logo-44.targetsize-24.png" />
-    <Content Include="Assets\Logo\Logo-44.targetsize-256.png" />
-    <Content Include="Assets\Logo\Logo-44.targetsize-32.png" />
-    <Content Include="Assets\Logo\Logo-44.targetsize-48.png" />
-    <Content Include="Assets\Logo\Logo-50.scale-100.png" />
-    <Content Include="Assets\Logo\Logo-50.scale-125.png" />
-    <Content Include="Assets\Logo\Logo-50.scale-150.png" />
-    <Content Include="Assets\Logo\Logo-50.scale-200.png" />
-    <Content Include="Assets\Logo\Logo-50.scale-400.png" />
-    <Content Include="Assets\Logo\Logo-71.scale-100.png" />
-    <Content Include="Assets\Logo\Logo-71.scale-125.png" />
-    <Content Include="Assets\Logo\Logo-71.scale-150.png" />
-    <Content Include="Assets\Logo\Logo-71.scale-200.png" />
-    <Content Include="Assets\Logo\Logo-71.scale-400.png" />
-    <Content Include="Assets\Logo\Logo-Wide150.scale-100.png" />
-    <Content Include="Assets\Logo\Logo-Wide150.scale-125.png" />
-    <Content Include="Assets\Logo\Logo-Wide150.scale-150.png" />
-    <Content Include="Assets\Logo\Logo-Wide150.scale-200.png" />
-    <Content Include="Assets\Logo\Logo-Wide150.scale-400.png" />
-    <Content Include="Assets\Logo\Logo-Wide300.scale-100.png" />
-    <Content Include="Assets\Logo\Logo-Wide300.scale-125.png" />
-    <Content Include="Assets\Logo\Logo-Wide300.scale-150.png" />
-    <Content Include="Assets\Logo\Logo-Wide300.scale-200.png" />
-    <Content Include="Assets\Logo\Logo-Wide300.scale-400.png" />
-    <Content Include="Properties\Default.rd.xml" />
+    <Content Include="..\..\Platforms\UWP\Assets\Logo\*.png">
+      <Link>Assets\Logo\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Platforms\UWP\Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.14" />

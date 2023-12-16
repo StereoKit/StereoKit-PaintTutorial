@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0-android</TargetFramework>
+		<RuntimeIdentifiers>android-arm64</RuntimeIdentifiers>
+		<SupportedOSPlatformVersion>29</SupportedOSPlatformVersion>
+		<OutputType>Exe</OutputType>
+		<ApplicationId>net.stereokit.StereoKitInk</ApplicationId>
+		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<RootNamespace>StereoKitInk</RootNamespace>
+		<ReadOnlyProject>true</ReadOnlyProject>
+
+		<SKOpenXRLoader>Standard</SKOpenXRLoader>
+		<SKAssetFolder>..\..\Assets</SKAssetFolder>
+		<SKAssetDestination>Assets</SKAssetDestination>
+
+		<!--Suppress targetSdkVersion 29 warnings. XR devices use old versions
+		    of Android.-->
+		<NoWarn>XA4211;XA1006;XA4301</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="StereoKit" Version="0.3.8" />
+	</ItemGroup>
+
+	<!--Point Android to the right folders, otherwise these default to the root
+	    directory.-->
+	<PropertyGroup>
+		<AndroidManifest          >..\..\Platforms\Android\AndroidManifest.xml</AndroidManifest>
+		<MonoAndroidResourcePrefix>..\..\Platforms\Android\Resources</MonoAndroidResourcePrefix>
+		<MonoAndroidAssetsPrefix  >..\..\Platforms\Android\Assets</MonoAndroidAssetsPrefix>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Include="..\..\**\*.cs" Exclude="..\..\obj\**;..\..\bin\**;..\..\Projects\**" />
+
+		<!--Don't compile .NET Core code in this project.-->
+		<Compile Remove="..\..\**\*.Net.cs" />
+		<Compile Remove="..\..\Platforms\Net\**\*.cs" />
+
+		<!--Don't compile UWP code in this project.-->
+		<Compile Remove="..\..\**\*.UWP.cs" />
+		<Compile Remove="..\..\Platforms\UWP\**\*.cs" />
+
+		<!--Hide everything in this project, otherwise it's a lot of
+		    duplication that creates noise.-->
+		<Compile Update="..\..\**" Visible="false" />
+		<None    Update="..\..\**" Visible="false" />
+		<Content Update="..\..\**" Visible="false" />
+
+		<Compile Update="..\..\**\*.Android.cs" Visible="true" />
+		<Compile Update="..\..\Platforms\Android\**\*.cs" Visible="true" />
+	</ItemGroup>
+</Project>

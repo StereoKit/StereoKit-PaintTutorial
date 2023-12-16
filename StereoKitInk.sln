@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29613.14
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StereoKitInk", "StereoKitInk.csproj", "{563E3D2A-5C5D-48C6-9349-6649C0E408E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StereoKitInk_UWP", "StereoKitInk_UWP\StereoKitInk_UWP.csproj", "{3FC8E1CB-F77C-46BE-B16C-580BDCC5FAAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StereoKitInk_UWP", "Projects\UWP\StereoKitInk_UWP.csproj", "{3FC8E1CB-F77C-46BE-B16C-580BDCC5FAAD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StereoKitInk_Android", "Projects\Android\StereoKitInk_Android.csproj", "{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,24 @@ Global
 		{3FC8E1CB-F77C-46BE-B16C-580BDCC5FAAD}.Release|x64.ActiveCfg = Release|x64
 		{3FC8E1CB-F77C-46BE-B16C-580BDCC5FAAD}.Release|x64.Build.0 = Release|x64
 		{3FC8E1CB-F77C-46BE-B16C-580BDCC5FAAD}.Release|x64.Deploy.0 = Release|x64
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Debug|ARM64.Deploy.0 = Debug|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Debug|x64.Build.0 = Debug|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Debug|x64.Deploy.0 = Debug|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Release|ARM64.Build.0 = Release|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Release|ARM64.Deploy.0 = Release|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Release|x64.ActiveCfg = Release|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Release|x64.Build.0 = Release|Any CPU
+		{F4B26F60-7FC4-49F4-9142-D5DEE14B89C9}.Release|x64.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
