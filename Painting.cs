@@ -188,7 +188,7 @@ class Painting
 
 	static string LinePointToString(LinePoint point)
 	{
-		return string.Format("{0} {1} {2} {3} {4} {5} {6}",
+		return string.Format(System.Globalization.CultureInfo.InvariantCulture,"{0} {1} {2} {3} {4} {5} {6}",
 			point.pt   .x, point.pt   .y, point.pt   .z,
 			point.color.r, point.color.g, point.color.b,
 			point.thickness);
@@ -198,14 +198,14 @@ class Painting
 	{
 		string[]  values = point.Split(' ');
 		LinePoint result = new LinePoint();
-		result.pt   .x = float.Parse(values[0]);
-		result.pt   .y = float.Parse(values[1]);
-		result.pt   .z = float.Parse(values[2]);
-		result.color.r = byte .Parse(values[3]);
-		result.color.g = byte .Parse(values[4]);
-		result.color.b = byte .Parse(values[5]);
+		result.pt   .x = float.Parse(values[0], System.Globalization.CultureInfo.InvariantCulture);
+		result.pt   .y = float.Parse(values[1], System.Globalization.CultureInfo.InvariantCulture);
+		result.pt   .z = float.Parse(values[2], System.Globalization.CultureInfo.InvariantCulture);
+		result.color.r = byte .Parse(values[3], System.Globalization.CultureInfo.InvariantCulture);
+		result.color.g = byte .Parse(values[4], System.Globalization.CultureInfo.InvariantCulture);
+		result.color.b = byte .Parse(values[5], System.Globalization.CultureInfo.InvariantCulture);
 		result.color.a = 255;
-		result.thickness = float.Parse(values[6]);
+		result.thickness = float.Parse(values[6], System.Globalization.CultureInfo.InvariantCulture);
 		return result;
 	}
 
