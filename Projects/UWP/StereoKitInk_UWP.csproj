@@ -72,26 +72,22 @@
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
-	<ItemGroup>
-		<Compile Include="..\..\**\*.cs" Exclude="..\..\obj\**;..\..\bin\**;..\..\Projects\**" />
-
-		<!--Don't compile .NET Core code in this project.-->
-		<Compile Remove="..\..\**\*.Net.cs" />
-		<Compile Remove="..\..\Platforms\Net\**\*.cs" />
-
+  <ItemGroup>
+    <Compile Include="..\..\**\*.cs" Exclude="..\..\obj\**;..\..\bin\**;..\..\Projects\**" />
+    <!--Don't compile .NET Core code in this project.-->
+    <Compile Remove="..\..\**\*.Net.cs" />
+    <Compile Remove="..\..\Platforms\Net\**\*.cs" />
     <!--Don't compile Android code in this project.-->
-		<Compile Remove="..\..\**\*.Android.cs" />
-		<Compile Remove="..\..\Platforms\Android\**\*.cs" />
-
-		<!--Hide everything in this project, otherwise it's a lot of
+    <Compile Remove="..\..\**\*.Android.cs" />
+    <Compile Remove="..\..\Platforms\Android\**\*.cs" />
+    <!--Hide everything in this project, otherwise it's a lot of
 		    duplication that creates noise.-->
-		<Compile Update="..\..\**" Visible="false" />
-		<None    Update="..\..\**" Visible="false" />
-		<Content Update="..\..\**" Visible="false" />
-
-		<Compile Update="..\..\**\*.UWP.cs" Visible="true" />
-		<Compile Update="..\..\Platforms\UWP\**\*.cs" Visible="true" />
-	</ItemGroup>
+    <Compile Update="..\..\**" Visible="false" />
+    <None Update="..\..\**" Visible="false" />
+    <Content Update="..\..\**" Visible="false" />
+    <Compile Update="..\..\**\*.UWP.cs" Visible="true" />
+    <Compile Update="..\..\Platforms\UWP\**\*.cs" Visible="true" />
+  </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="..\..\Platforms\UWP\Package.appxmanifest">
       <SubType>Designer</SubType>
@@ -106,7 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.14" />
-    <PackageReference Include="StereoKit" Version="0.3.8" />
+    <PackageReference Include="StereoKit" Version="0.3.10" />
     <!--Match any version before 1.0-->
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '16.0' ">

@@ -18,8 +18,7 @@ class Program
 		// mode fails.
 		SKSettings settings = new SKSettings
 		{
-			appName      = "StereoKit Ink",
-			assetsFolder = "Assets",
+			appName = "StereoKit Ink",
 		};
 		if (!SK.Initialize(settings))
 			return;

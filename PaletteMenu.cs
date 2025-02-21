@@ -39,7 +39,7 @@ class PaletteMenu
 		UI.SameLine();
 		SwatchColor("Gray",  _hue, 0, .6f);
 		UI.SameLine();
-		SwatchColor("Blk",   _hue, 0, SK.System.displayType == Display.Additive ? 0.25f : 0);
+		SwatchColor("Blk",   _hue, 0, Device.DisplayBlend == DisplayBlend.Additive ? 0.25f : 0);
 		UI.SameLine();
 		SwatchColor("Green", .33f, .9f, 1);
 		UI.SameLine();
@@ -47,7 +47,7 @@ class PaletteMenu
 		UI.SameLine();
 		SwatchColor("Red",   0,    .9f, 1);
 
-		UI.Space(UI.LineHeight*0.5f);
+		UI.VSpace(UI.LineHeight*0.5f);
 
 		// Swatches are never enough by themselves! So here's some sliders to
 		// let the user HSV their color manually. We start with a fixed size
